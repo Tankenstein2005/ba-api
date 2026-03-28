@@ -5,6 +5,11 @@ dotenv.config();
 export const env = {
   port: Number(process.env.PORT || 4000),
   clientUrl: process.env.CLIENT_URL || "http://localhost:443",
+  clientUrls: (process.env.CLIENT_URLS || process.env.CLIENT_URL || "http://localhost:443")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean),
+  databaseUrl: process.env.DATABASE_URL || "",
   dbHost: process.env.DB_HOST || "localhost",
   dbPort: Number(process.env.DB_PORT || 3306),
   dbUser: process.env.DB_USER || "root",
