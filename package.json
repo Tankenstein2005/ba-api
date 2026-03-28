@@ -16,7 +16,7 @@
     "precommit:lint": "npm run lint:check",
     "precommit:format": "npm run format:check",
     "precommit": "npm run precommit:lint && npm run precommit:format",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "dependencies": {
     "cors": "^2.8.5",
