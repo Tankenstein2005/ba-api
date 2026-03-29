@@ -13,11 +13,16 @@ import {
   rescheduleBooking,
   updateEventType
 } from "../controllers/eventController.js";
+import { getSystemStatus } from "../services/systemService.js";
 
 const router = Router();
 
-router.get("/health", (_req, res) => {
-  res.json({ ok: true });
+router.get("/health", async (_req, res, next) => {
+  try {
+    res.json(await getSystemStatus());
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get("/event-types", listEventTypes);

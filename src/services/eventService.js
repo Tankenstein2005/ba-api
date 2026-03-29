@@ -33,8 +33,12 @@ function buildPublicLink(slug) {
 }
 
 function shouldUseDemoStore(error) {
-  if (env.forceDemoData) {
+  if (env.storageMode === "demo") {
     return true;
+  }
+
+  if (env.storageMode === "database") {
+    return false;
   }
 
   if (!error || error.status) {
@@ -53,7 +57,7 @@ function shouldUseDemoStore(error) {
 }
 
 async function withDataSource(databaseOperation, demoOperation) {
-  if (env.forceDemoData) {
+  if (env.storageMode === "demo") {
     return demoOperation();
   }
 
