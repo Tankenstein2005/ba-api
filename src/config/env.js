@@ -37,6 +37,13 @@ const configuredClientUrls = (
   .split(",")
   .map((value) => value.trim())
   .filter(Boolean);
+const configuredStorageMode = process.env.STORAGE_MODE?.trim().toLowerCase();
+const storageMode =
+  process.env.FORCE_DEMO_DATA === "true"
+    ? "demo"
+    : ["auto", "database", "demo"].includes(configuredStorageMode)
+      ? configuredStorageMode
+      : "auto";
 
 export const env = {
   port: Number(process.env.PORT || 4000),
@@ -53,6 +60,7 @@ export const env = {
   dbPassword: process.env.DB_PASSWORD || "",
   dbName: process.env.DB_NAME || "BrokenArrowDB",
   forceDemoData: process.env.FORCE_DEMO_DATA === "true",
+  storageMode,
   profileName: process.env.PROFILE_NAME || "Broken Arrow Studio",
   profileTagline:
     process.env.PROFILE_TAGLINE ||
