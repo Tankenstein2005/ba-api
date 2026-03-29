@@ -6,10 +6,28 @@ import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
+function isAllowedOrigin(origin) {
+  return env.clientUrls.some((allowedOrigin) => {
+    if (allowedOrigin.includes("*")) {
+      const pattern = new RegExp(
+        `^${allowedOrigin
+          .split("*")
+          .map((segment) =>
+            segment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+          )
+          .join(".*")}$`,
+      );
+      return pattern.test(origin);
+    }
+
+    return allowedOrigin === origin;
+  });
+}
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || env.clientUrls.includes(origin)) {
+      if (!origin || isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
